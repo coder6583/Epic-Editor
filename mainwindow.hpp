@@ -1,5 +1,6 @@
 #include "highlighter.hpp"
 #include <QApplication>
+#include <QtGui>
 #include <QMenu>
 #include <QMenuBar>
 #include <QAction>
@@ -28,6 +29,15 @@
 #include <QFontMetricsF>
 #include <QDebug>
 #include <QFontDatabase>
+#include <fstream>
+#include <QSignalMapper>
+#include <QKeyEvent>
+#include <QEvent>
+#include <QTextCursor>
+#include <QClipboard>
+#include <QLineEdit>
+#include <QGridLayout>
+#include <QLabel>
 
 class MainWindow : public QMainWindow
 {
@@ -35,59 +45,75 @@ class MainWindow : public QMainWindow
 
   public:
      MainWindow(QWidget *parent = 0);
+     ~MainWindow();
+
+  protected:
+    //void keyPressEvent(QKeyEvent *event);
+    bool eventFilter(QObject *object, QEvent *event);
 
   private slots:
     void deleteTab(int index);
     void ifdoubleclicked(QModelIndex item);
     bool save(const QString &fileName);
+    void openfolder(QString folder_name);
+    void find(const QString &text);
 
     void NewWindow();
     void NewFile();
     void OpenFile();
     void OpenFolder();
     // void AddProjectFolder();
-    // void ReopenProject();
+    void ReopenProject();
     // void ReopenLastItem();
     bool SaveFile();
     bool SaveAs();
     // void SaveAll();
     //
-    // void CloseTab();
-    // void ClosePane();
-    // void CloseWindow();
+    void CloseTab();
+    void ClosePane();
+    void CloseWindow();
+
     // void Undo();
     // void Redo();
     // void Cut();
     // void Copy();
-    // void CopyPath();
+    void CopyPath();
     // void Paste();
     // void PasteWithoutReformatting();
     // void SelectAll();
-    // void ToggleComment();
+    void ToggleComment();
     //
-    // void FullScreen();
-    // void IncreaseFontSize();
-    // void DecreaseFontSize();
-    // void ResetFontSize();
+    void FullScreen();
+    void IncreaseFontSize();
+    void DecreaseFontSize();
+    void ResetFontSize();
     //
     // void AddSelectionAbove();
     // void AddSelectionBelow();
     // void SingleSelection();
-    // void SelectLine();
-    // void SelectWord();
+    void SelectLine();
+    void SelectWord();
+    void SelectInsideBrackets();
     //
-    // void FindInBuffer();
+    void FindInBuffer();
     // void ReplaceInBuffer();
     // void FindInProject();
 
   private:
+    QDockWidget *finddock;
+    QString filetoopen;
+    std::ofstream openedprojectsfile;
+    QMenu *ReopenProjectMenu;
     QTextEdit *textedit;
     QTabWidget *tabs;
     QTreeView *tree;
     QFileSystemModel *model;
+    QClipboard *clipboard;
+    int fontsize = 16;
     std::map<QString, QTextEdit*> m_textedit;
     Highlighter *highlighter;
     QFont font;
     bool folderIsOpen = false;
     int untitledcount = 0;
+    QString openedfolderdir;
 };

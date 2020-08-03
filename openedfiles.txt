@@ -1,1 +1,8 @@
-hello hello
+/home/thedude6583/Desktop/C++Projects
+/home/thedude6583/Desktop/C++Projects/TextEditor/Epic-Editor
+
+/home/thedude6583/Desktop/texteditor
+
+/home/thedude6583/Desktop/C++Projects/filesystemtest
+
+
